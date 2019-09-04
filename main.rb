@@ -16,8 +16,10 @@ class Station
     end
   end
 
-  def send_train
-    @trains.pop
+  def send_train(train)
+    if @trains.include? train
+      @trains.delete train
+    end
   end
 end
 
@@ -93,7 +95,7 @@ class Train
     # If the route is actually set
     if not @route.nil?
       # Then send train from the current station
-      @route.all_stations[@cur_station_index].send_train
+      @route.all_stations[@cur_station_index].send_train(self)
       @cur_station_index += 1
       @cur_station_index %= @route_length
       # And receive it on the next station
@@ -103,10 +105,10 @@ class Train
 
   def traverse_prev_station
     if not @route.nil?
-      @route.all_stations[@cur_station_index].send_train
+      @route.all_stations[@cur_station_index].send_train(self)
       @cur_station_index -= 1
       @cur_station_index %= @route_length
-      @route.all_stations[@cur_station_index].receive_train
+      @route.all_stations[@cur_station_index].receive_train(self)
     end
   end
 
