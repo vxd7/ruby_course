@@ -52,7 +52,7 @@ class Route
 end
 
 class Train
-  attr_reader :velocity, :carriage_num
+  attr_reader :velocity, :carriage_num, :type
 
   def initialize(id, type, carriage_num)
     @id = id
