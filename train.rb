@@ -18,13 +18,13 @@ class Train
   end
 
   def add_carriage
-    if not @velocity
+    if @velocity != 0
       @carriage_num += 1
     end
   end
 
   def remove_carriage
-    if not @velocity and @carriage_num
+    if @velocity != 0 and @carriage_num != 0
       @carriage_num -= 1
     end
   end
