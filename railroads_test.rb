@@ -17,26 +17,23 @@ route.add_intermediate_station(station4)
 # Make train
 train = Train.new(123, "passenger", 10)
 train.set_route(route)
-puts train.get_cur_station.name
+puts train.current_station.name
 
 train.traverse_next_station
-puts train.get_cur_station.name
+puts train.current_station.name
 
 train.traverse_next_station
-puts train.get_cur_station.name
+puts train.current_station.name
  
 train.traverse_next_station
-puts train.get_cur_station.name
+puts train.current_station.name
 
 train.traverse_next_station
-puts train.get_cur_station.name
-
-train.traverse_next_station
-puts train.get_cur_station.name
+puts train.current_station.name
 
 # We are currently on station1
 puts "There are passenger trains on station1" if not station1.trains_by_type("passenger").empty?
 puts "There are cargo trains station 1" if not station1.trains_by_type("cargo").empty?
 
-puts "There are passenger trains on station2" if not station2.trains_by_type("passenger").empty?
-puts "There are cargo trains station 2" if not station2.trains_by_type("cargo").empty?
+puts "There are passenger trains on station5" if not station5.trains_by_type("passenger").empty?
+puts "There are cargo trains station 5" if not station5.trains_by_type("cargo").empty?
