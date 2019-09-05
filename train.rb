@@ -13,8 +13,8 @@ class Train
     @velocity += delta_velocity
   end
 
-  def stop
-    @velocity = 0
+  def decrease_speed(delta_velocity)
+    @velocity -= delta_velocity
   end
 
   def add_carriage
