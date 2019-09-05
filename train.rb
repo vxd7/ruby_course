@@ -37,7 +37,7 @@ class Train
 
   def traverse_next_station
     # If the route is actually set
-    if not @route.nil?
+    if @route
       # Then send train from the current station
       @route.all_stations[@cur_station_index].send_train(self)
       @cur_station_index += 1
@@ -47,7 +47,7 @@ class Train
   end
 
   def traverse_prev_station
-    if not @route.nil?
+    if @route
       @route.all_stations[@cur_station_index].send_train(self)
       @cur_station_index -= 1
       @route.all_stations[@cur_station_index].receive_train(self)
