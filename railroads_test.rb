@@ -31,7 +31,7 @@ puts train.current_station.name
 train.traverse_next_station
 puts train.current_station.name
 
-# We are currently on station1
+# We are currently on station5
 puts "There are passenger trains on station1" if not station1.trains_by_type("passenger").empty?
 puts "There are cargo trains station 1" if not station1.trains_by_type("cargo").empty?
 
