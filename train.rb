@@ -33,38 +33,38 @@ class Train
 
   def set_route(route)
     @route = route
-    @cur_station_index = 0
-    @route.all_stations[@cur_station_index].receive_train(self)
+    @current_station_index = 0
+    @route.all_stations[@current_station_index].receive_train(self)
   end
 
   def traverse_next_station
     # If the route is actually set
     if @route
       # Then send train from the current station
-      @route.all_stations[@cur_station_index].send_train(self)
-      @cur_station_index += 1
+      @route.all_stations[@current_station_index].send_train(self)
+      @current_station_index += 1
       # And receive it on the next station
-      @route.all_stations[@cur_station_index].receive_train(self)
+      @route.all_stations[@current_station_index].receive_train(self)
     end
   end
 
   def traverse_prev_station
     if @route
-      @route.all_stations[@cur_station_index].send_train(self)
-      @cur_station_index -= 1
-      @route.all_stations[@cur_station_index].receive_train(self)
+      @route.all_stations[@current_station_index].send_train(self)
+      @current_station_index -= 1
+      @route.all_stations[@current_station_index].receive_train(self)
     end
   end
 
   def current_station
-    @route.all_stations[@cur_station_index]
+    @route.all_stations[@current_station_index]
   end
 
   def previous_station
-    @route.all_stations[@cur_station_index - 1]
+    @route.all_stations[@current_station_index - 1]
   end
 
   def next_station
-    @route.all_stations[@cur_station_index + 1]
+    @route.all_stations[@current_station_index + 1]
   end
 end
