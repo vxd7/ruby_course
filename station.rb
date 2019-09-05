@@ -11,9 +11,7 @@ class Station
   end
 
   def trains_by_type(type)
-    @trains.select do |train|
-      train.type == type
-    end
+    @trains.select { |train| train.type == type }
   end
 
   def send_train(train)
