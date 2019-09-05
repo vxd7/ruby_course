@@ -1,6 +1,6 @@
-require 'station'
-require 'route'
-require 'train'
+require_relative 'station'
+require_relative 'route'
+require_relative 'train'
 
 station1 = Station.new("station1")
 station2 = Station.new("station2")
