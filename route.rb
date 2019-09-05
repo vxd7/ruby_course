@@ -10,7 +10,9 @@ class Route
   end
 
   def remove_intermediate_station(station)
-    @stations.delete(station)
+    unless station == @stations[0] or station == @stations[-1]
+      @stations.delete(station)
+    end
   end
 
   def list_all_stations
