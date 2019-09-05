@@ -14,7 +14,9 @@ class Train
   end
 
   def decrease_speed(delta_velocity)
-    @velocity -= delta_velocity
+    if @velocity != 0
+      @velocity -= delta_velocity
+    end
   end
 
   def add_carriage
