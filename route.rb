@@ -14,6 +14,6 @@ class Route
   end
 
   def list_all_stations
-    self.all_stations.each { |station| puts station }
+    @all_stations.each { |station| puts station }
   end
 end
