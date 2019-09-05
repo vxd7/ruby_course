@@ -54,15 +54,15 @@ class Train
     end
   end
 
-  def get_cur_station
+  def current_station
     @route.all_stations[@cur_station_index]
   end
 
-  def get_prev_station
+  def previous_station
     @route.all_stations[@cur_station_index - 1]
   end
 
-  def get_next_station
+  def next_station
     @route.all_stations[@cur_station_index + 1]
   end
 end
