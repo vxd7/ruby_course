@@ -4,7 +4,7 @@ class Train
   def initialize(id, type, carriage_num)
     @id = id
     @type = type
-    @carriage_num = carriage_num
+    @carriages = []
 
     @velocity = 0
   end
@@ -23,12 +23,12 @@ class Train
     @velocity -= delta_velocity unless engine_stopped?
   end
 
-  def add_carriage
-    @carriage_num += 1 if engine_stopped?
+  def add_carriage(carriage)
+    @carriages << carriage if engine_stopped?
   end
 
-  def remove_carriage
-    @carriage_num -= 1 if engine_stopped? && @carriage_num != 0
+  def remove_carriage(carriage)
+    @carriages.delete(carriage) if engine_stopped?
   end
 
   def set_route(route)
