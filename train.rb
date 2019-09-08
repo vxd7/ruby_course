@@ -1,5 +1,5 @@
 class Train
-  attr_reader :velocity, :carriage_num, :type
+  attr_reader :velocity, :type, :id
 
   def initialize(id, type, carriage_num)
     @id = id
@@ -11,6 +11,10 @@ class Train
 
   def engine_stopped?
     @velocity.zero?
+  end
+
+  def number_carriages
+    @carriages.length
   end
 
   def accelerate_by(delta_velocity)
@@ -67,4 +71,10 @@ class Train
   def next_station
     @route.stations[@current_station_index + 1]
   end
+
+  protected
+
+  # Геттер в protected, т.к. функционал по просмотру вагонов
+  # в составе требуется только подклассам
+  attr_reader :carriages
 end
