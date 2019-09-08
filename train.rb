@@ -18,21 +18,15 @@ class Train
   end
 
   def decrease_speed(delta_velocity)
-    if @velocity != 0
-      @velocity -= delta_velocity
-    end
+    @velocity -= delta_velocity unless engine_stopped?
   end
 
   def add_carriage
-    if @velocity != 0
-      @carriage_num += 1
-    end
+    @carriage_num += 1 if engine_stopped?
   end
 
   def remove_carriage
-    if @velocity != 0 and @carriage_num != 0
-      @carriage_num -= 1
-    end
+    @carriage_num -= 1 if engine_stopped? && @carriage_num != 0
   end
 
   def set_route(route)
