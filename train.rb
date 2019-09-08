@@ -1,7 +1,7 @@
 class Train
   attr_reader :velocity, :type, :id
 
-  def initialize(id, type, carriage_num)
+  def initialize(id, type)
     @id = id
     @type = type
     @carriages = []
