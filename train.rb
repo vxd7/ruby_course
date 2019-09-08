@@ -9,6 +9,10 @@ class Train
     @velocity = 0
   end
 
+  def engine_stopped?
+    @velocity.zero?
+  end
+
   def accelerate_by(delta_velocity)
     @velocity += delta_velocity
   end
