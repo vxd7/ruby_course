@@ -18,6 +18,8 @@ class Train
   end
 
   def decrease_speed(delta_velocity)
+    return if (@velocity - delta_velocity).negative?
+
     @velocity -= delta_velocity unless engine_stopped?
   end
 
