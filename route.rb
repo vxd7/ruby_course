@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class Route
-  attr_reader :stations
+  attr_reader :stations, :name
 
-  def initialize(start_station, end_station)
+  def initialize(start_station, end_station, name)
     @stations = [start_station, end_station]
+    @name = name
   end
 
   def add_intermediate_station(station)
