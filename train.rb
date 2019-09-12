@@ -29,10 +29,6 @@ class Train
     @velocity -= delta_velocity unless engine_stopped?
   end
 
-  def add_carriage(carriage)
-    @carriages << carriage if engine_stopped?
-  end
-
   def remove_carriage(carriage)
     @carriages.delete(carriage) if engine_stopped?
   end
@@ -76,7 +72,9 @@ class Train
 
   protected
 
-  # Геттер в protected, т.к. функционал по просмотру вагонов
-  # в составе требуется только подклассам
   attr_reader :carriages
+
+  def add_carriage(carriage)
+    @carriages << carriage if engine_stopped?
+  end
 end
