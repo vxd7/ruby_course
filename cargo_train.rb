@@ -3,9 +3,13 @@
 require_relative 'train'
 
 class CargoTrain < Train
-  def add_carriage(carriage)
-    return unless carirage.type == @type
+  def initialize(id)
+    super(id, 'cargo')
+  end
 
-    super
+  def add_carriage(carriage)
+    return unless carriage.type == 'cargo'
+
+    super(carriage)
   end
 end
