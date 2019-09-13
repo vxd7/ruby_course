@@ -66,7 +66,7 @@ class RouteManagement
     intermediate_station = search_station_tui
     return if intermediate_station.nil?
 
-    target_route.add_intermediate_station(intermediate_station)
+    target_route.remove_intermediate_station(intermediate_station)
   end
 
   private
