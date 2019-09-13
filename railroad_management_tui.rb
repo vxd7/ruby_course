@@ -20,17 +20,19 @@ class RailroadManagementTui
   private
 
   def open_menu(object, message, actions)
-    puts MESSAGES[message]
-    user_input = gets.chomp.to_i
+    while true
+      puts MESSAGES[message]
+      user_input = gets.chomp.to_i
 
-    # Open general menu if user chooses to go back from
-    # sub-menus
-    tui if user_input == actions.length
+      # Open general menu if user chooses to go back from
+      # sub-menus
+      tui if user_input == actions.length
 
-    return if user_input.negative?
-    return if user_input > actions.length
+      return if user_input.negative?
+      return if user_input > actions.length
 
-    object.send(actions[user_input])
+      object.send(actions[user_input])
+    end
   end
 
   MESSAGES = {
@@ -73,20 +75,17 @@ class RailroadManagementTui
   def route_management_menu
     puts ''
     open_menu(route_manager, :route_management_info, ACTIONS_ROUTE_MANAGEMENT)
-    route_management_menu # Continue user interaction
   end
 
   def train_management_menu
     puts ''
     open_menu(train_manager, :train_management_info, ACTIONS_TRAIN_MANAGEMENT)
-    train_management_menu
   end
 
   def station_management_menu
     puts ''
     open_menu(station_manager, :station_management_info,
               ACTIONS_STATION_MANAGEMENT)
-    station_management_menu
   end
 
   def terminate_manager
