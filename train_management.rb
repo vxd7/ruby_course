@@ -20,7 +20,7 @@ class TrainManagement
   def find_route_tui
     puts 'Pls input route name'
     route_name = gets.chomp
-    railroad_manager.route_manager.routes.find { |route| route.name == route_name }
+    @railroad_manager.route_manager.routes.find { |route| route.name == route_name }
   end
 
   def find_carriage_tui
