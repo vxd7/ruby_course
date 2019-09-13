@@ -5,36 +5,6 @@ require_relative 'route_management'
 require_relative 'station_management'
 
 class RailroadManagementTui
-  attr_reader :train_manager, :route_manager, :station_manager
-
-  def initialize
-    @train_manager = TrainManagement.new(self)
-    @route_manager = RouteManagement.new(self)
-    @station_manager = StationManagement.new(self)
-  end
-
-  def tui
-    open_menu(self, :general_info, ACTIONS_GENERAL)
-  end
-
-  private
-
-  def open_menu(object, message, actions)
-    while true
-      puts MESSAGES[message]
-      user_input = gets.chomp.to_i
-
-      # Open general menu if user chooses to go back from
-      # sub-menus
-      tui if user_input == actions.length
-
-      return if user_input.negative?
-      return if user_input > actions.length
-
-      object.send(actions[user_input])
-    end
-  end
-
   MESSAGES = {
     general_info: "Welcome!\n"\
                   "--------\n"\
@@ -72,27 +42,6 @@ class RailroadManagementTui
                              'To go back press 2'
   }.freeze
 
-  def route_management_menu
-    puts ''
-    open_menu(route_manager, :route_management_info, ACTIONS_ROUTE_MANAGEMENT)
-  end
-
-  def train_management_menu
-    puts ''
-    open_menu(train_manager, :train_management_info, ACTIONS_TRAIN_MANAGEMENT)
-  end
-
-  def station_management_menu
-    puts ''
-    open_menu(station_manager, :station_management_info,
-              ACTIONS_STATION_MANAGEMENT)
-  end
-
-  def terminate_manager
-    puts 'Goodbye, have a nice day!'
-    exit(true)
-  end
-
   ACTIONS_GENERAL = [:route_management_menu,
                      :train_management_menu,
                      :station_management_menu,
@@ -114,4 +63,57 @@ class RailroadManagementTui
 
   ACTIONS_STATION_MANAGEMENT = [:new_station,
                                 :list_stations].freeze
+
+  private_constant :MESSAGES, :ACTIONS_GENERAL, :ACTIONS_ROUTE_MANAGEMENT,
+                   :ACTIONS_TRAIN_MANAGEMENT, :ACTIONS_STATION_MANAGEMENT
+  attr_reader :train_manager, :route_manager, :station_manager
+
+  def initialize
+    @train_manager = TrainManagement.new(self)
+    @route_manager = RouteManagement.new(self)
+    @station_manager = StationManagement.new(self)
+  end
+
+  def tui
+    open_menu(self, :general_info, ACTIONS_GENERAL)
+  end
+
+  private
+
+  def open_menu(object, message, actions)
+    while true
+      puts MESSAGES[message]
+      user_input = gets.chomp.to_i
+
+      # Open general menu if user chooses to go back from
+      # sub-menus
+      tui if user_input == actions.length
+
+      return if user_input.negative?
+      return if user_input > actions.length
+
+      object.send(actions[user_input])
+    end
+  end
+
+  def route_management_menu
+    puts ''
+    open_menu(route_manager, :route_management_info, ACTIONS_ROUTE_MANAGEMENT)
+  end
+
+  def train_management_menu
+    puts ''
+    open_menu(train_manager, :train_management_info, ACTIONS_TRAIN_MANAGEMENT)
+  end
+
+  def station_management_menu
+    puts ''
+    open_menu(station_manager, :station_management_info,
+              ACTIONS_STATION_MANAGEMENT)
+  end
+
+  def terminate_manager
+    puts 'Goodbye, have a nice day!'
+    exit(true)
+  end
 end
