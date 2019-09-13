@@ -82,6 +82,6 @@ class RouteManagement
     puts 'Pls input route name'
     route_name = gets.chomp
 
-    @routes.find { |route| route.name == route_namestation }
+    @routes.find { |route| route.name == route_name }
   end
 end
