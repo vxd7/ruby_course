@@ -41,6 +41,13 @@ class TrainManagement
     end
   end
 
+  def list_carriages
+    return if @carriages.empty?
+
+    puts 'Avaliable carriages:'
+    @carriages.each { |carriage| puts "ID: #{carriage.id}; Type: #{carriage.type}" }
+  end
+
   def new_train
     puts 'Pls input new train id'
     train_id = gets.chomp
@@ -53,9 +60,11 @@ class TrainManagement
       new_train = PassengerTrain.new(train_id)
     when 'cargo'
       new_train = CargoTrain.new(train_id)
+    else return
     end
 
     @trains << new_train
+    puts "Created train #{train_id} with type: #{train_type}"
   end
 
   def new_carriage
@@ -70,12 +79,18 @@ class TrainManagement
       new_carriage = PassengerCarriage.new(carriage_id)
     when 'cargo'
       new_carriage = CargoCarriage.new(carriage_id)
+    else return
     end
 
     @carriages << new_carriage
+    puts "Created carriage #{carriage_id}!"
   end
 
   def set_route
+    # Show all the trains and routes to the user
+    list_trains
+    @railroad_manager.route_manager.list_routes
+
     target_train = find_train_tui
     return if target_train.nil?
 
@@ -88,6 +103,9 @@ class TrainManagement
   end
 
   def add_carriage
+    list_trains
+    list_carriages
+
     target_train = find_train_tui
     return if target_train.nil?
 
@@ -99,6 +117,9 @@ class TrainManagement
   end
 
   def remove_carriage
+    list_trains
+    list_carriages
+
     target_train = find_train_tui
     return if target_train.nil?
 
@@ -110,16 +131,20 @@ class TrainManagement
   end
 
   def traverse_forward
+    list_trains
+
     target_train = find_train_tui
     return if target_train.nil?
 
-    target_train.traverse_forward
+    target_train.traverse_next_station
   end
 
   def traverse_backward
+    list_trains
+
     target_train = find_train_tui
     return if target_train.nil?
 
-    target_train.traverse_backward
+    target_train.traverse_prev_station
   end
 end
