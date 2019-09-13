@@ -1,12 +1,22 @@
-class Train
-  attr_reader :velocity, :carriage_num, :type
+# frozen_string_literal: true
 
-  def initialize(id, type, carriage_num)
+class Train
+  attr_reader :velocity, :type, :id
+
+  def initialize(id, type)
     @id = id
     @type = type
-    @carriage_num = carriage_num
+    @carriages = []
 
     @velocity = 0
+  end
+
+  def engine_stopped?
+    @velocity.zero?
+  end
+
+  def number_carriages
+    @carriages.length
   end
 
   def accelerate_by(delta_velocity)
@@ -14,21 +24,13 @@ class Train
   end
 
   def decrease_speed(delta_velocity)
-    if @velocity != 0
-      @velocity -= delta_velocity
-    end
+    return if (@velocity - delta_velocity).negative?
+
+    @velocity -= delta_velocity unless engine_stopped?
   end
 
-  def add_carriage
-    if @velocity != 0
-      @carriage_num += 1
-    end
-  end
-
-  def remove_carriage
-    if @velocity != 0 and @carriage_num != 0
-      @carriage_num -= 1
-    end
+  def remove_carriage(carriage)
+    @carriages.delete(carriage) if engine_stopped?
   end
 
   def set_route(route)
@@ -66,5 +68,13 @@ class Train
 
   def next_station
     @route.stations[@current_station_index + 1]
+  end
+
+  protected
+
+  attr_reader :carriages
+
+  def add_carriage(carriage)
+    @carriages << carriage if engine_stopped?
   end
 end
