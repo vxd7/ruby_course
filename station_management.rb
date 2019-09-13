@@ -27,6 +27,9 @@ class StationManagement
   def trains_on_station(station)
     return 'No trains' if station.trains.empty?
 
-    station.trains.each { |train| puts train.id }
+    res = ''
+    station.trains.each { |train| res += train.id + ' ' }
+
+    res
   end
 end
