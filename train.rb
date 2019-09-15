@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'manufacturer_company'
+
 class Train
   attr_reader :velocity, :type, :id
+  include ManufacturerCompany
 
   def initialize(id, type)
     @id = id
