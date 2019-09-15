@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'manufacturer_company'
+require_relative 'instance_counter'
 
 class Train
   attr_reader :velocity, :type, :id
   include ManufacturerCompany
+  include InstanceCounter
 
   class << self
     attr_accessor :all_trains
@@ -19,6 +21,8 @@ class Train
 
     self.class.all_trains ||= []
     self.class.all_trains << self
+
+    register_instance
   end
 
   def engine_stopped?
