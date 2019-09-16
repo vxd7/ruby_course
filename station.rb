@@ -1,11 +1,23 @@
 # frozen_string_literal: true
 
+require_relative 'instance_counter'
+
 class Station
   attr_reader :trains, :name
+  include InstanceCounter
+
+  @all_stations = []
+
+  class << self
+    attr_accessor :all_stations
+  end
 
   def initialize(name)
     @name = name
     @trains = []
+
+    self.class.all_stations << self
+    register_instance
   end
 
   def receive_train(train)
@@ -18,5 +30,9 @@ class Station
 
   def send_train(train)
     @trains.delete(train)
+  end
+
+  def self.all
+    all_stations
   end
 end

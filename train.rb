@@ -1,7 +1,16 @@
 # frozen_string_literal: true
 
+require_relative 'manufacturer_company'
+require_relative 'instance_counter'
+
 class Train
   attr_reader :velocity, :type, :id
+  include ManufacturerCompany
+  include InstanceCounter
+
+  class << self
+    attr_accessor :all_trains
+  end
 
   def initialize(id, type)
     @id = id
@@ -9,6 +18,11 @@ class Train
     @carriages = []
 
     @velocity = 0
+
+    self.class.all_trains ||= []
+    self.class.all_trains << self
+
+    register_instance
   end
 
   def engine_stopped?
@@ -68,6 +82,12 @@ class Train
 
   def next_station
     @route.stations[@current_station_index + 1]
+  end
+
+  def self.find(id)
+    return if @all_trains.nil?
+
+    @all_trains.find { |train| train.id == id }
   end
 
   protected
