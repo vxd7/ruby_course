@@ -2,11 +2,21 @@
 
 class TrainManagement
   attr_reader :trains, :carriages
+  # Three letters or numbers, optional minus sign and two letter or numbers
+  ID_PATTERN = /^([a-zA-Z]|\d){3}\-{0,1}([a-zA-Z]|\d){2}/.freeze
+  MAX_USER_ATTEMPTS = 3
 
   def initialize(railroad_manager)
     @trains = []
     @carriages = []
     @railroad_manager = railroad_manager
+  end
+
+  def valid_id?(id)
+    validate_id!(id)
+    true
+  rescue StandardError
+    false
   end
 
   private
@@ -29,7 +39,48 @@ class TrainManagement
     @carriages.find { |carriage| carriage.id == carriage_id }
   end
 
+  def validate_id!(id)
+    raise 'Incorrect number of characters in train id' unless id.length.between?(5, 6)
+    raise 'Incorrect format of train id' unless id =~ ID_PATTERN
+  end
+
+  def new_train!(train_id, train_type)
+    validate_id!(train_id)
+
+    case train_type
+    when 'passenger'
+      new_train = PassengerTrain.new(train_id)
+    when 'cargo'
+      new_train = CargoTrain.new(train_id)
+    else raise 'Incorrect train type!'
+    end
+
+    @trains << new_train
+  end
+
   public
+
+  def new_train
+    attempt = 0
+    begin
+      attempt += 1
+
+      puts 'Pls input new train id'
+      train_id = gets.chomp
+
+      puts 'Pls input train type (1 for passenger, 2 for cargo)'
+      train_type = gets.chomp.to_i
+
+      new_train!(train_id, train_type)
+    rescue StandardError
+      puts 'There was an error! Please try again'
+
+      retry if attempt < MAX_USER_ATTEMPTS
+      raise
+    end
+
+    puts "Created train #{train_id} with type: #{train_type}"
+  end
 
   def list_trains
     return if @trains.empty?
@@ -46,25 +97,6 @@ class TrainManagement
 
     puts 'Avaliable carriages:'
     @carriages.each { |carriage| puts "ID: #{carriage.id}; Type: #{carriage.type}" }
-  end
-
-  def new_train
-    puts 'Pls input new train id'
-    train_id = gets.chomp
-
-    puts 'Pls input train type (passenger/cargo)'
-    train_type = gets.chomp
-
-    case train_type
-    when 'passenger'
-      new_train = PassengerTrain.new(train_id)
-    when 'cargo'
-      new_train = CargoTrain.new(train_id)
-    else return
-    end
-
-    @trains << new_train
-    puts "Created train #{train_id} with type: #{train_type}"
   end
 
   def new_carriage
