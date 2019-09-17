@@ -74,10 +74,14 @@ class TrainManagement
       new_train!(train_id, train_type)
     rescue StandardError => e
       puts "There was an error: #{e.message}"
-      puts 'Please try again'
 
-      retry if attempt < MAX_USER_ATTEMPTS
-      raise
+      if attempt < MAX_USER_ATTEMPTS
+        puts 'Please try again'
+        retry
+      else
+        puts 'Max number of attempts reached!'
+        raise
+      end
     end
 
     puts "Created train #{train_id} with type: #{train_type}"
