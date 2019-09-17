@@ -72,6 +72,13 @@ class TrainManagement
     @carriages << new_carriage
   end
 
+  def set_route!(target_train, target_route)
+    raise 'Invalid train' if target_train.nil?
+    raise 'Invalid route' if target_route.nil?
+
+    target_train.set_route(target_route)
+  end
+
   public
 
   def new_train
@@ -145,13 +152,20 @@ class TrainManagement
     list_trains
     @railroad_manager.route_manager.list_routes
 
-    target_train = find_train_tui
-    return if target_train.nil?
+    attempt = 0
+    begin
+      attempt += 1
+      target_train = find_train_tui
+      target_route = find_route_tui
 
-    target_route = find_route_tui
-    return if target_route.nil?
+      set_route!(target_train, target_route)
+    rescue StandardError => e
+      puts "There was an error: #{e.message}"
 
-    target_train.set_route(target_route)
+      puts 'Please try again' if attempt < MAX_USER_ATTEMPTS
+      retry if attempt < MAX_USER_ATTEMPTS
+    end
+
     puts "Successfully set route #{target_route.name} for"\
          "the train #{target_train.id}!"
   end
