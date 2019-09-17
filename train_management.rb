@@ -68,8 +68,8 @@ class TrainManagement
       puts 'Pls input new train id'
       train_id = gets.chomp
 
-      puts 'Pls input train type (1 for passenger, 2 for cargo)'
-      train_type = gets.chomp.to_i
+      puts 'Pls input train type (passenger, cargo)'
+      train_type = gets.chomp
 
       new_train!(train_id, train_type)
     rescue StandardError
