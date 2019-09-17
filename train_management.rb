@@ -58,6 +58,20 @@ class TrainManagement
     @trains << new_train
   end
 
+  def new_carriage!(carriage_id, carriage_type)
+    raise 'Invalid carriage id' if carriage_id.length.zero?
+
+    case carriage_type
+    when 'passenger'
+      new_carriage = PassengerCarriage.new(carriage_id)
+    when 'cargo'
+      new_carriage = CargoCarriage.new(carriage_id)
+    else raise 'Invalid carriage type'
+    end
+
+    @carriages << new_carriage
+  end
+
   public
 
   def new_train
@@ -105,21 +119,24 @@ class TrainManagement
   end
 
   def new_carriage
-    puts 'Pls input new carriage id:'
-    carriage_id = gets.chomp
+    attempt = 0
+    begin
+      attempt += 1
 
-    puts "Pls input desired type for carriage #{carriage_id}"
-    carriage_type = gets.chomp
+      puts 'Pls input new carriage id:'
+      carriage_id = gets.chomp
 
-    case carriage_type
-    when 'passenger'
-      new_carriage = PassengerCarriage.new(carriage_id)
-    when 'cargo'
-      new_carriage = CargoCarriage.new(carriage_id)
-    else return
+      puts "Pls input desired type for carriage #{carriage_id}"
+      carriage_type = gets.chomp
+
+      new_carriage!(carriage_id, carriage_type)
+    rescue StandardError => e
+      puts "There was an error: #{e.message}"
+
+      puts 'Please try again' if attempt < MAX_USER_ATTEMPTS
+      retry if attempt < MAX_USER_ATTEMPTS
     end
 
-    @carriages << new_carriage
     puts "Created carriage #{carriage_id}!"
   end
 
