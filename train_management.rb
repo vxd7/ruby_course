@@ -72,8 +72,9 @@ class TrainManagement
       train_type = gets.chomp
 
       new_train!(train_id, train_type)
-    rescue StandardError
-      puts 'There was an error! Please try again'
+    rescue StandardError => e
+      puts "There was an error: #{e.message}"
+      puts 'Please try again'
 
       retry if attempt < MAX_USER_ATTEMPTS
       raise
