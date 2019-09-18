@@ -11,6 +11,8 @@ class StationManagement
   def new_station
     puts 'Pls input new station name:'
     station_name = gets.chomp
+    raise 'Station name cannot be empty!' if station_name.empty?
+
     new_station = Station.new(station_name)
 
     @stations << new_station
