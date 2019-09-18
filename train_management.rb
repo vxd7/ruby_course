@@ -86,6 +86,13 @@ class TrainManagement
     target_train.add_carriage(target_carriage)
   end
 
+  def remove_carriage!(target_train, target_carriage)
+    raise 'Invalid train' if target_train.nil?
+    raise 'Invalid carriage' if target_carriage.nil?
+
+    target_train.remove_carriage(target_carriage)
+  end
+
   public
 
   def new_train
@@ -203,12 +210,10 @@ class TrainManagement
     list_carriages
 
     target_train = find_train_tui
-    return if target_train.nil?
-
     target_carriage = find_carriage_tui
-    return if target_carriage.nil?
 
-    target_train.remove_carriage(target_carriage)
+    remove_carriage!(target_train, target_carriage)
+
     puts 'Seccessfully removed carriage!'
   end
 
@@ -216,7 +221,7 @@ class TrainManagement
     list_trains
 
     target_train = find_train_tui
-    return if target_train.nil?
+    raise 'Invalid train' if target_train.nil?
 
     target_train.traverse_next_station
   end
@@ -225,7 +230,7 @@ class TrainManagement
     list_trains
 
     target_train = find_train_tui
-    return if target_train.nil?
+    raise 'Invalid train' if target_train.nil?
 
     target_train.traverse_prev_station
   end
