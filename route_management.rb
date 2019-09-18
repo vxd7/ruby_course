@@ -29,14 +29,15 @@ class RouteManagement
 
     puts 'Pls input route name'
     route_name = gets.chomp
+    raise 'Route name cannot be empty!' if route_name.empty?
 
     puts 'Pls input starting station'
     start_station = search_station_tui
-    return if start_station.nil?
+    raise 'Incorrect station!' if start_station.nil?
 
     puts 'Pls input end station'
     end_station = search_station_tui
-    return if end_station.nil?
+    raise 'Incorrect station!' if end_station.nil?
 
     new_route = Route.new(start_station, end_station, route_name)
     @routes << new_route
@@ -48,11 +49,11 @@ class RouteManagement
   def add_station
     puts 'Please input information about the route'
     target_route = search_route_tui
-    return if target_route.nil?
+    raise 'Incorrect route!' if target_route.nil?
 
     puts 'Now please input information about intermediate station'
     intermediate_station = search_station_tui
-    return if intermediate_station.nil?
+    raise 'Incorrect station!' if intermediate_station.nil?
 
     target_route.add_intermediate_station(intermediate_station)
   end
@@ -60,11 +61,11 @@ class RouteManagement
   def remove_station
     puts 'Please input information about the route'
     target_route = search_route_tui
-    return if target_route.nil?
+    raise 'Incorrect route!' if target_route.nil?
 
     puts 'Now please input information about intermediate station'
     intermediate_station = search_station_tui
-    return if intermediate_station.nil?
+    raise 'Incorrect station' if intermediate_station.nil?
 
     target_route.remove_intermediate_station(intermediate_station)
   end
