@@ -79,18 +79,17 @@ class TrainManagement
     target_train.set_route(target_route)
   end
 
-  def add_carriage!(target_train, target_carriage)
+  def alter_carriages!(target_train, target_carriage, action)
     raise 'Invalid train' if target_train.nil?
     raise 'Invalid carriage' if target_carriage.nil?
 
-    target_train.add_carriage(target_carriage)
-  end
-
-  def remove_carriage!(target_train, target_carriage)
-    raise 'Invalid train' if target_train.nil?
-    raise 'Invalid carriage' if target_carriage.nil?
-
-    target_train.remove_carriage(target_carriage)
+    case action
+    when 'add'
+      target_train.add_carriage(target_carriage)
+    when 'remove'
+      target_train.remove_carriage(target_carriage)
+    else raise 'Invalid action'
+    end
   end
 
   public
@@ -194,7 +193,7 @@ class TrainManagement
       target_train = find_train_tui
       target_carriage = find_carriage_tui
 
-      add_carriage!(target_train, target_carriage)
+      alter_carriages!(target_train, target_carriage, 'add')
     rescue StandardError => e
       puts "There was an error: #{e.message}"
 
@@ -212,7 +211,7 @@ class TrainManagement
     target_train = find_train_tui
     target_carriage = find_carriage_tui
 
-    remove_carriage!(target_train, target_carriage)
+    alter_carriages!(target_train, target_carriage, 'remove')
 
     puts 'Seccessfully removed carriage!'
   end
