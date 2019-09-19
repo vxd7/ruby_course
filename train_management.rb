@@ -2,21 +2,12 @@
 
 class TrainManagement
   attr_reader :trains, :carriages
-  # Three letters or numbers, optional minus sign and two letter or numbers
-  ID_PATTERN = /^([a-zA-Z]|\d){3}\-{0,1}([a-zA-Z]|\d){2}/.freeze
   MAX_USER_ATTEMPTS = 3
 
   def initialize(railroad_manager)
     @trains = []
     @carriages = []
     @railroad_manager = railroad_manager
-  end
-
-  def valid_id?(id)
-    validate_id!(id)
-    true
-  rescue StandardError
-    false
   end
 
   private
@@ -37,11 +28,6 @@ class TrainManagement
     puts 'Pls input carriage id'
     carriage_id = gets.chomp
     @carriages.find { |carriage| carriage.id == carriage_id }
-  end
-
-  def validate_id!(id)
-    raise 'Incorrect number of characters in train id' unless id.length.between?(5, 6)
-    raise 'Incorrect format of train id' unless id =~ ID_PATTERN
   end
 
   def new_train!(train_id, train_type)

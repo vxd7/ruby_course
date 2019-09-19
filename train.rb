@@ -8,6 +8,9 @@ class Train
   include ManufacturerCompany
   include InstanceCounter
 
+  # Three letters or numbers, optional minus sign and two letter or numbers
+  ID_PATTERN = /^([a-zA-Z]|\d){3}\-{0,1}([a-zA-Z]|\d){2}/.freeze
+
   class << self
     attr_accessor :all_trains
   end
@@ -23,6 +26,7 @@ class Train
     self.class.all_trains << self
 
     register_instance
+    validate!
   end
 
   def engine_stopped?
@@ -90,11 +94,25 @@ class Train
     @all_trains.find { |train| train.id == id }
   end
 
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
+  end
+
   protected
 
   attr_reader :carriages
 
   def add_carriage(carriage)
     @carriages << carriage if engine_stopped?
+  end
+
+  private
+
+  def validate!
+    raise 'Incorrect number of characters in train id' unless @id.length.between?(5, 6)
+    raise 'Incorrect format of train id' unless @id =~ ID_PATTERN
   end
 end
