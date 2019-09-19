@@ -18,6 +18,7 @@ class Station
 
     self.class.all_stations << self
     register_instance
+    validate!
   end
 
   def receive_train(train)
@@ -34,5 +35,18 @@ class Station
 
   def self.all
     all_stations
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
+  end
+
+  private
+
+  def validate!
+    raise "Name cannot be empty" if name.empty?
   end
 end

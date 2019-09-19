@@ -31,8 +31,6 @@ class TrainManagement
   end
 
   def new_train!(train_id, train_type)
-    validate_id!(train_id)
-
     case train_type
     when 'passenger'
       new_train = PassengerTrain.new(train_id)

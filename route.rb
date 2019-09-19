@@ -11,6 +11,7 @@ class Route
     @name = name
 
     register_instance
+    validate!
   end
 
   def add_intermediate_station(station)
@@ -25,5 +26,18 @@ class Route
 
   def list_all_stations
     @stations.each { |station| puts station.name }
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
+  end
+
+  private
+
+  def validate!
+    raise "Name cannot be empty" if name.empty?
   end
 end
