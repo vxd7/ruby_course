@@ -106,7 +106,7 @@ class TrainManagement
         retry
       else
         puts 'Max number of attempts reached!'
-        raise
+        return
       end
     end
 
