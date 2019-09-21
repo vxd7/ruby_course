@@ -226,8 +226,6 @@ class TrainManagement
   rescue StandardError => e
     puts 'There was an error while traversing the train forward'
     puts "The error was: #{e.message}"
-    puts 'Please try again'
-    retry
   end
 
   def traverse_backward
@@ -243,7 +241,5 @@ class TrainManagement
   rescue StandardError => e
     puts 'There was an error while traversing the train forward'
     puts "The error was: #{e.message}"
-    puts 'Please try again'
-    retry
   end
 end
