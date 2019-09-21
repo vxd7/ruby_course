@@ -18,8 +18,8 @@ class Station
     @name = name
     @trains = []
 
-    self.class.all_stations << self
     validate!
+    self.class.all_stations << self
     register_instance
   end
 
