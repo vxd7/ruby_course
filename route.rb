@@ -28,6 +28,13 @@ class Route
   end
 
   def remove_intermediate_station(station)
+    raise 'Incorrect station' if station.nil?
+
+    unless station.is_a?(Station)
+      raise 'Intermediate station to remove '\
+            'must be an instance of Station'
+    end
+
     if station == @statins.first || station == @stations.last
       raise 'Cannot remove starting or ending station from a route'
     end
