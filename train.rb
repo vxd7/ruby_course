@@ -84,7 +84,7 @@ class Train
   end
 
   def traverse_next_station
-    raise 'Invalid route!' if @route.nil?
+    raise 'Route is not set!' if @route.nil?
 
     # Then send train from the current station
     current_station.send_train(self)
@@ -94,7 +94,7 @@ class Train
   end
 
   def traverse_prev_station
-    raise 'Invalid route!' if @route.nil?
+    raise 'Route is not set!' if @route.nil?
 
     current_station.send_train(self)
     @current_station_index -= 1
