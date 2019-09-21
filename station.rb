@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
+require_relative 'Validator'
 
 class Station
   attr_reader :trains, :name
   include InstanceCounter
+  include Validator
 
   @all_stations = []
 
@@ -37,12 +39,12 @@ class Station
     all_stations
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
+  # def valid?
+  #   validate!
+  #   true
+  # rescue StandardError
+  #   false
+  # end
 
   private
 
