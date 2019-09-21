@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
-require_relative 'Validator'
+require_relative 'validator'
 
 class Station
   attr_reader :trains, :name
@@ -19,8 +19,8 @@ class Station
     @trains = []
 
     self.class.all_stations << self
-    register_instance
     validate!
+    register_instance
   end
 
   def receive_train(train)
