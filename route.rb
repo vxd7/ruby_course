@@ -35,7 +35,7 @@ class Route
             'must be an instance of Station'
     end
 
-    if station == @statins.first || station == @stations.last
+    if station == @stations.first || station == @stations.last
       raise 'Cannot remove starting or ending station from a route'
     end
 
