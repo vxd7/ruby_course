@@ -9,11 +9,17 @@ class StationManagement
   end
 
   def new_station
-    puts 'Pls input new station name:'
-    station_name = gets.chomp
-    raise 'Station name cannot be empty!' if station_name.empty?
+    begin
+      puts 'Pls input new station name:'
+      station_name = gets.chomp
 
-    new_station = Station.new(station_name)
+      new_station = Station.new(station_name)
+    rescue StandardError => e
+      puts 'There was an error while creating a new station'
+      puts "The error was: #{e.message}"
+      puts 'Please try again'
+      retry
+    end
 
     @stations << new_station
     puts "Station #{station_name} created successfully!"
