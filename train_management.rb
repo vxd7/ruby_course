@@ -201,6 +201,10 @@ class TrainManagement
     list_carriages
 
     target_train = find_train_tui
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
     target_carriage = find_carriage_tui
 
     alter_carriages!(target_train, target_carriage, 'remove')
@@ -218,6 +222,12 @@ class TrainManagement
     end
 
     target_train.traverse_next_station
+
+  rescue StandardError => e
+    puts 'There was an error while traversing the train forward'
+    puts "The error was: #{e.message}"
+    puts 'Please try again'
+    retry
   end
 
   def traverse_backward
@@ -230,5 +240,10 @@ class TrainManagement
     end
 
     target_train.traverse_prev_station
+  rescue StandardError => e
+    puts 'There was an error while traversing the train forward'
+    puts "The error was: #{e.message}"
+    puts 'Please try again'
+    retry
   end
 end
