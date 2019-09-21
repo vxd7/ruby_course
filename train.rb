@@ -24,10 +24,15 @@ class Train
 
     @velocity = 0
 
+    # Validate object first
+    validate!
+
+    # If object is valid, push it to
+    # object hash
     self.class.all_trains ||= []
     self.class.all_trains << self
 
-    validate!
+    # And register it
     register_instance
   end
 
