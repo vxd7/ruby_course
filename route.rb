@@ -12,8 +12,8 @@ class Route
     @stations = [start_station, end_station]
     @name = name
 
-    register_instance
     validate!
+    register_instance
   end
 
   def add_intermediate_station(station)
