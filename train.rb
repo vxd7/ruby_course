@@ -54,33 +54,51 @@ class Train
     @velocity -= delta_velocity unless engine_stopped?
   end
 
+  def add_carriage(carriage)
+    raise 'Invalid carriage' if carriage.nil?
+
+    unless carriage.is_a?(Carriage)
+      raise 'carriage to add must be an instance of Carriage'
+    end
+
+    @carriages << carriage if engine_stopped?
+  end
+
   def remove_carriage(carriage)
+    raise 'Invalid carriage' if carriage.nil?
+
+    unless carriage.is_a?(Carriage)
+      raise 'carriage to add must be an instance of Carriage'
+    end
+
     @carriages.delete(carriage) if engine_stopped?
   end
 
   def set_route(route)
+    raise 'Invalid route' if route.nil?
+    raise 'route must be an instance if Route' unless route.is_a?(Route)
+
     @route = route
     @current_station_index = 0
     current_station.receive_train(self)
   end
 
   def traverse_next_station
-    # If the route is actually set
-    if @route
-      # Then send train from the current station
-      current_station.send_train(self)
-      @current_station_index += 1
-      # And receive it on the next station
-      current_station.receive_train(self)
-    end
+    raise 'Invalid route!' if @route.nil?
+
+    # Then send train from the current station
+    current_station.send_train(self)
+    @current_station_index += 1
+    # And receive it on the next station
+    current_station.receive_train(self)
   end
 
   def traverse_prev_station
-    if @route
-      current_station.send_train(self)
-      @current_station_index -= 1
-      current_station.receive_train(self)
-    end
+    raise 'Invalid route!' if @route.nil?
+
+    current_station.send_train(self)
+    @current_station_index -= 1
+    current_station.receive_train(self)
   end
 
   def current_station
@@ -111,10 +129,6 @@ class Train
   protected
 
   attr_reader :carriages
-
-  def add_carriage(carriage)
-    @carriages << carriage if engine_stopped?
-  end
 
   private
 
