@@ -27,8 +27,8 @@ class Train
     self.class.all_trains ||= []
     self.class.all_trains << self
 
-    register_instance
     validate!
+    register_instance
   end
 
   def engine_stopped?
