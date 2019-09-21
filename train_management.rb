@@ -36,43 +36,51 @@ class TrainManagement
       new_train = PassengerTrain.new(train_id)
     when 'cargo'
       new_train = CargoTrain.new(train_id)
-    else raise 'Incorrect train type!'
+    else
+      puts 'Incorrect train type! Cannot proceed'
+      return
     end
 
     @trains << new_train
   end
 
   def new_carriage!(carriage_id, carriage_type)
-    raise 'Invalid carriage id' if carriage_id.length.zero?
-
     case carriage_type
     when 'passenger'
       new_carriage = PassengerCarriage.new(carriage_id)
     when 'cargo'
       new_carriage = CargoCarriage.new(carriage_id)
-    else raise 'Invalid carriage type'
+    else
+      puts 'Invalid carriage type! Cannot proceed'
+      return
     end
 
     @carriages << new_carriage
   end
 
   def set_route!(target_train, target_route)
-    raise 'Invalid train' if target_train.nil?
-    raise 'Invalid route' if target_route.nil?
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
 
     target_train.set_route(target_route)
   end
 
   def alter_carriages!(target_train, target_carriage, action)
-    raise 'Invalid train' if target_train.nil?
-    raise 'Invalid carriage' if target_carriage.nil?
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
 
     case action
     when 'add'
       target_train.add_carriage(target_carriage)
     when 'remove'
       target_train.remove_carriage(target_carriage)
-    else raise 'Invalid action'
+    else
+      puts 'Invalid action! Cannot proceed'
+      return
     end
   end
 
@@ -204,7 +212,10 @@ class TrainManagement
     list_trains
 
     target_train = find_train_tui
-    raise 'Invalid train' if target_train.nil?
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
 
     target_train.traverse_next_station
   end
@@ -213,7 +224,10 @@ class TrainManagement
     list_trains
 
     target_train = find_train_tui
-    raise 'Invalid train' if target_train.nil?
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
 
     target_train.traverse_prev_station
   end
