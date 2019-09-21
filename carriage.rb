@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'manufacturer_company'
+require_relative 'validator'
 
 class Carriage
   attr_reader :type, :id
   include ManufacturerCompany
+  include Validator
   ID_PATTERN = /\w/.freeze
 
   def initialize(type, id)
@@ -13,12 +15,12 @@ class Carriage
     validate!
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
+  # def valid?
+  #   validate!
+  #   true
+  # rescue StandardError
+  #   false
+  # end
 
   private
 

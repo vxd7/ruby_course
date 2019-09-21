@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
+require_relative 'validator'
 
 class Route
   attr_reader :stations, :name
   include InstanceCounter
+  include Validator
 
   def initialize(start_station, end_station, name)
     @stations = [start_station, end_station]
@@ -28,12 +30,12 @@ class Route
     @stations.each { |station| puts station.name }
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
+  # def valid?
+  #   validate!
+  #   true
+  # rescue StandardError
+  #   false
+  # end
 
   private
 
