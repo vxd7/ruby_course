@@ -2,11 +2,13 @@
 
 require_relative 'manufacturer_company'
 require_relative 'instance_counter'
+require_relative 'validator'
 
 class Train
   attr_reader :velocity, :type, :id
   include ManufacturerCompany
   include InstanceCounter
+  include Validator # valid?
 
   # Three letters or numbers, optional minus sign and two letter or numbers
   ID_PATTERN = /^([a-zA-Z]|\d){3}\-{0,1}([a-zA-Z]|\d){2}/.freeze
@@ -94,12 +96,12 @@ class Train
     @all_trains.find { |train| train.id == id }
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
+  # def valid?
+  #   validate!
+  #   true
+  # rescue StandardError
+  #   false
+  # end
 
   protected
 
