@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
+require_relative 'validator'
 
 class Station
   attr_reader :trains, :name
   include InstanceCounter
+  include Validator
 
   @all_stations = []
 
@@ -16,6 +18,7 @@ class Station
     @name = name
     @trains = []
 
+    validate!
     self.class.all_stations << self
     register_instance
   end
@@ -34,5 +37,18 @@ class Station
 
   def self.all
     all_stations
+  end
+
+  # def valid?
+  #   validate!
+  #   true
+  # rescue StandardError
+  #   false
+  # end
+
+  private
+
+  def validate!
+    raise "Name cannot be empty" if name.empty?
   end
 end

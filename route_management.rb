@@ -27,18 +27,24 @@ class RouteManagement
     # First list all avaliable stations
     @railroad_manager.station_manager.list_stations
 
-    puts 'Pls input route name'
-    route_name = gets.chomp
+    begin
+      puts 'Pls input route name'
+      route_name = gets.chomp
 
-    puts 'Pls input starting station'
-    start_station = search_station_tui
-    return if start_station.nil?
+      puts 'Pls input starting station'
+      start_station = search_station_tui
 
-    puts 'Pls input end station'
-    end_station = search_station_tui
-    return if end_station.nil?
+      puts 'Pls input end station'
+      end_station = search_station_tui
 
-    new_route = Route.new(start_station, end_station, route_name)
+      new_route = Route.new(start_station, end_station, route_name)
+    rescue StandardError => e
+      puts 'There was an error while constructing a new Route'
+      puts "The error was: #{e.message}"
+      puts 'Please try again'
+      retry
+    end
+
     @routes << new_route
 
     puts "New route #{route_name} starting at #{start_station.name} and ending at "\
@@ -48,25 +54,39 @@ class RouteManagement
   def add_station
     puts 'Please input information about the route'
     target_route = search_route_tui
-    return if target_route.nil?
+    if target_route.nil? || !target_route.is_a?(Route)
+      puts 'Incorrect target route! Cannot proceed'
+      return
+    end
 
     puts 'Now please input information about intermediate station'
     intermediate_station = search_station_tui
-    return if intermediate_station.nil?
 
     target_route.add_intermediate_station(intermediate_station)
+  rescue StandardError => e
+    puts 'There was an error while adding intermediate station'
+    puts "The error was: #{e.message}"
+    puts 'Please try again'
+    retry
   end
 
   def remove_station
     puts 'Please input information about the route'
     target_route = search_route_tui
-    return if target_route.nil?
+    if target_route.nil? || !target_route.is_a?(Route)
+      puts 'Incorrect target route! Cannot proceed'
+      return
+    end
 
     puts 'Now please input information about intermediate station'
     intermediate_station = search_station_tui
-    return if intermediate_station.nil?
 
     target_route.remove_intermediate_station(intermediate_station)
+  rescue StandardError => e
+    puts 'There was an error while adding intermediate station'
+    puts "The error was: #{e.message}"
+    puts 'Please try again'
+    retry
   end
 
   private

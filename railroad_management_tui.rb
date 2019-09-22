@@ -83,7 +83,7 @@ class RailroadManagementTui
   private
 
   def open_menu(object, message, actions)
-    while true
+    loop do
       puts MESSAGES[message]
       user_input = gets.chomp.to_i
 

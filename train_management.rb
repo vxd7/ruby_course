@@ -2,6 +2,7 @@
 
 class TrainManagement
   attr_reader :trains, :carriages
+  MAX_USER_ATTEMPTS = 3
 
   def initialize(railroad_manager)
     @trains = []
@@ -29,7 +30,88 @@ class TrainManagement
     @carriages.find { |carriage| carriage.id == carriage_id }
   end
 
+  def new_train!(train_id, train_type)
+    case train_type
+    when 'passenger'
+      new_train = PassengerTrain.new(train_id)
+    when 'cargo'
+      new_train = CargoTrain.new(train_id)
+    else
+      puts 'Incorrect train type! Cannot proceed'
+      return
+    end
+
+    @trains << new_train
+  end
+
+  def new_carriage!(carriage_id, carriage_type)
+    case carriage_type
+    when 'passenger'
+      new_carriage = PassengerCarriage.new(carriage_id)
+    when 'cargo'
+      new_carriage = CargoCarriage.new(carriage_id)
+    else
+      puts 'Invalid carriage type! Cannot proceed'
+      return
+    end
+
+    @carriages << new_carriage
+  end
+
+  def set_route!(target_train, target_route)
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
+
+    target_train.set_route(target_route)
+  end
+
+  def alter_carriages!(target_train, target_carriage, action)
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
+
+    case action
+    when 'add'
+      target_train.add_carriage(target_carriage)
+    when 'remove'
+      target_train.remove_carriage(target_carriage)
+    else
+      puts 'Invalid action! Cannot proceed'
+      return
+    end
+  end
+
   public
+
+  def new_train
+    attempt = 0
+    begin
+      attempt += 1
+
+      puts 'Pls input new train id'
+      train_id = gets.chomp
+
+      puts 'Pls input train type (passenger, cargo)'
+      train_type = gets.chomp
+
+      new_train!(train_id, train_type)
+    rescue StandardError => e
+      puts "There was an error: #{e.message}"
+
+      if attempt < MAX_USER_ATTEMPTS
+        puts 'Please try again'
+        retry
+      else
+        puts 'Max number of attempts reached!'
+        return
+      end
+    end
+
+    puts "Created train #{train_id} with type: #{train_type}"
+  end
 
   def list_trains
     return if @trains.empty?
@@ -48,41 +130,25 @@ class TrainManagement
     @carriages.each { |carriage| puts "ID: #{carriage.id}; Type: #{carriage.type}" }
   end
 
-  def new_train
-    puts 'Pls input new train id'
-    train_id = gets.chomp
-
-    puts 'Pls input train type (passenger/cargo)'
-    train_type = gets.chomp
-
-    case train_type
-    when 'passenger'
-      new_train = PassengerTrain.new(train_id)
-    when 'cargo'
-      new_train = CargoTrain.new(train_id)
-    else return
-    end
-
-    @trains << new_train
-    puts "Created train #{train_id} with type: #{train_type}"
-  end
-
   def new_carriage
-    puts 'Pls input new carriage id:'
-    carriage_id = gets.chomp
+    attempt = 0
+    begin
+      attempt += 1
 
-    puts "Pls input desired type for carriage #{carriage_id}"
-    carriage_type = gets.chomp
+      puts 'Pls input new carriage id:'
+      carriage_id = gets.chomp
 
-    case carriage_type
-    when 'passenger'
-      new_carriage = PassengerCarriage.new(carriage_id)
-    when 'cargo'
-      new_carriage = CargoCarriage.new(carriage_id)
-    else return
+      puts "Pls input desired type for carriage #{carriage_id}"
+      carriage_type = gets.chomp
+
+      new_carriage!(carriage_id, carriage_type)
+    rescue StandardError => e
+      puts "There was an error: #{e.message}"
+
+      puts 'Please try again' if attempt < MAX_USER_ATTEMPTS
+      retry if attempt < MAX_USER_ATTEMPTS
     end
 
-    @carriages << new_carriage
     puts "Created carriage #{carriage_id}!"
   end
 
@@ -91,13 +157,20 @@ class TrainManagement
     list_trains
     @railroad_manager.route_manager.list_routes
 
-    target_train = find_train_tui
-    return if target_train.nil?
+    attempt = 0
+    begin
+      attempt += 1
+      target_train = find_train_tui
+      target_route = find_route_tui
 
-    target_route = find_route_tui
-    return if target_route.nil?
+      set_route!(target_train, target_route)
+    rescue StandardError => e
+      puts "There was an error: #{e.message}"
 
-    target_train.set_route(target_route)
+      puts 'Please try again' if attempt < MAX_USER_ATTEMPTS
+      retry if attempt < MAX_USER_ATTEMPTS
+    end
+
     puts "Successfully set route #{target_route.name} for"\
          "the train #{target_train.id}!"
   end
@@ -106,13 +179,20 @@ class TrainManagement
     list_trains
     list_carriages
 
-    target_train = find_train_tui
-    return if target_train.nil?
+    attempt = 0
+    begin
+      attempt += 1
+      target_train = find_train_tui
+      target_carriage = find_carriage_tui
 
-    target_carriage = find_carriage_tui
-    return if target_carriage.nil?
+      alter_carriages!(target_train, target_carriage, 'add')
+    rescue StandardError => e
+      puts "There was an error: #{e.message}"
 
-    target_train.add_carriage(target_carriage)
+      puts 'Please try again' if attempt < MAX_USER_ATTEMPTS
+      retry if attempt < MAX_USER_ATTEMPTS
+    end
+
     puts 'Successfully set carriage!'
   end
 
@@ -121,12 +201,14 @@ class TrainManagement
     list_carriages
 
     target_train = find_train_tui
-    return if target_train.nil?
-
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
     target_carriage = find_carriage_tui
-    return if target_carriage.nil?
 
-    target_train.remove_carriage(target_carriage)
+    alter_carriages!(target_train, target_carriage, 'remove')
+
     puts 'Seccessfully removed carriage!'
   end
 
@@ -134,17 +216,30 @@ class TrainManagement
     list_trains
 
     target_train = find_train_tui
-    return if target_train.nil?
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
 
     target_train.traverse_next_station
+
+  rescue StandardError => e
+    puts 'There was an error while traversing the train forward'
+    puts "The error was: #{e.message}"
   end
 
   def traverse_backward
     list_trains
 
     target_train = find_train_tui
-    return if target_train.nil?
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
 
     target_train.traverse_prev_station
+  rescue StandardError => e
+    puts 'There was an error while traversing the train forward'
+    puts "The error was: #{e.message}"
   end
 end
