@@ -179,6 +179,47 @@ class TrainManagement
     puts "Created carriage #{carriage_id}!"
   end
 
+  def fill_carriage
+    list_carriages
+
+    carriage = find_carriage_tui
+
+    if carriage.nil?
+      puts 'Invalid carriage'
+      return
+    end
+
+    if carriage.type != 'cargo'
+      puts 'Invalid carriage type'
+      return
+    end
+
+    puts 'Pls input fill volume amount'
+    fill_val = gets.chomp.to_i
+    carriage.fill_volume(fill_val)
+
+    puts 'Successfully filled volume'
+  end
+
+  def take_seat
+    list_carriages
+
+    carriage = find_carriage_tui
+
+    if carriage.nil?
+      puts 'Invalid carriage'
+      return
+    end
+
+    if carriage.type != 'passenger'
+      puts 'Invalid carriage type'
+      return
+    end
+
+    carriage.take_seat
+    puts 'Successfully taken one seat'
+  end
+
   def set_route
     # Show all the trains and routes to the user
     list_trains
