@@ -126,6 +126,10 @@ class Train
   #   false
   # end
 
+  def each_carriage(&block)
+    @carriages.each { |carriage| block.call(carriage) if block_given? }
+  end
+
   protected
 
   attr_reader :carriages
