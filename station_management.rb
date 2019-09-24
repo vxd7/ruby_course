@@ -30,6 +30,20 @@ class StationManagement
     @stations.each { |station| puts "Name: #{station.name}; Trains: #{trains_on_station(station)}" }
   end
 
+  def list_trains_on_station
+    station = find_station_tui
+    if station.nil?
+      puts 'Invalid station'
+      return
+    end
+
+    station.each_train do |train|
+      puts "Train: #{train.id}"
+      puts "> type: #{train.type}"
+      puts "> number of carriages: #{train.number_carriages}"
+    end
+  end
+
   private
 
   def trains_on_station(station)
@@ -39,5 +53,12 @@ class StationManagement
     station.trains.each { |train| res += train.id + ' ' }
 
     res
+  end
+
+  def find_station_tui
+    puts 'Pls input station name'
+    station_name = gets.chomp
+
+    @stations.find { |station| station.name == station_name }
   end
 end

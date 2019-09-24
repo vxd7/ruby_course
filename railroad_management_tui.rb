@@ -41,7 +41,8 @@ class RailroadManagementTui
                              "------------------\n"\
                              "To create new station input 0\n"\
                              "To list all stations input 1\n"\
-                             'To go back press 2'
+                             "To list all trains of a particular station press 2\n"\
+                             'To go back press 3'
   }.freeze
 
   ACTIONS_GENERAL = [:route_management_menu,
@@ -66,7 +67,8 @@ class RailroadManagementTui
                               :list_carriages_in_train].freeze
 
   ACTIONS_STATION_MANAGEMENT = [:new_station,
-                                :list_stations].freeze
+                                :list_stations,
+                                :list_trains_on_station].freeze
 
   private_constant :MESSAGES, :ACTIONS_GENERAL, :ACTIONS_ROUTE_MANAGEMENT,
                    :ACTIONS_TRAIN_MANAGEMENT, :ACTIONS_STATION_MANAGEMENT
