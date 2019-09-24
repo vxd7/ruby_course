@@ -84,6 +84,22 @@ class TrainManagement
     end
   end
 
+  def show_carriage_info(carr)
+    puts "Carriage: #{carr.id}:"
+    puts " > type: #{carr.type}"
+
+    case carr.type
+    when 'passenger'
+      puts " > number of seats: #{carr.overall_seats}"
+      puts " > number of taken seats: #{carr.taken_seats}"
+      puts " > number of free seats: #{carr.avaliable_seats}"
+    when 'cargo'
+      puts " > overall volume: #{carr.overall_volume}"
+      puts " > filled volume: #{carr.filled_volume}"
+      puts " > avaliable volume: #{carr.avaliable_volume}"
+    end
+  end
+
   public
 
   def new_train
@@ -128,6 +144,13 @@ class TrainManagement
 
     puts 'Avaliable carriages:'
     @carriages.each { |carriage| puts "ID: #{carriage.id}; Type: #{carriage.type}" }
+  end
+
+  def list_carriages_in_train
+    list_trains
+
+    train = find_train_tui
+    train.each_carriage { |carr| show_carriage_info(carr) }
   end
 
   def new_carriage

@@ -3,7 +3,7 @@
 require_relative 'carriage'
 
 class PassengerCarriage < Carriage
-  attr_reader :avaliable_seats
+  attr_reader :avaliable_seats, :overall_seats
 
   def initialize(id, overall_seats)
     @overall_seats = overall_seats

@@ -3,7 +3,7 @@
 require_relative 'carriage'
 
 class CargoCarriage < Carriage
-  attr_reader :avaliable_volume
+  attr_reader :avaliable_volume, :overall_volume
 
   def initialize(id, overall_volume)
     @overall_volume = overall_volume

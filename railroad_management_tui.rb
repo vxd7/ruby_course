@@ -34,7 +34,8 @@ class RailroadManagementTui
                            "To traverse train backward press 6\n"\
                            "To list all trains press 7\n"\
                            "To list all carriages press 8\n"\
-                           'To go back press 9',
+                           "To list all carriages of a particular train press 9\n"\
+                           'To go back press 10',
 
     station_management_info: "Station management\n"\
                              "------------------\n"\
@@ -61,7 +62,8 @@ class RailroadManagementTui
                               :traverse_forward,
                               :traverse_backward,
                               :list_trains,
-                              :list_carriages].freeze
+                              :list_carriages,
+                              :list_carriages_in_train].freeze
 
   ACTIONS_STATION_MANAGEMENT = [:new_station,
                                 :list_stations].freeze
