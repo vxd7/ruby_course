@@ -46,6 +46,10 @@ class Station
   #   false
   # end
 
+  def each_train(&block)
+    @trains.each { |train| block.call(train) if block_given? }
+  end
+
   private
 
   def validate!
