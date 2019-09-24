@@ -44,12 +44,12 @@ class TrainManagement
     @trains << new_train
   end
 
-  def new_carriage!(carriage_id, carriage_type)
+  def new_carriage!(carriage_id, carriage_type, carriage_volume)
     case carriage_type
     when 'passenger'
-      new_carriage = PassengerCarriage.new(carriage_id)
+      new_carriage = PassengerCarriage.new(carriage_id, carriage_volume)
     when 'cargo'
-      new_carriage = CargoCarriage.new(carriage_id)
+      new_carriage = CargoCarriage.new(carriage_id, carriage_volume)
     else
       puts 'Invalid carriage type! Cannot proceed'
       return
@@ -141,7 +141,11 @@ class TrainManagement
       puts "Pls input desired type for carriage #{carriage_id}"
       carriage_type = gets.chomp
 
-      new_carriage!(carriage_id, carriage_type)
+      puts 'Pls input carriage volume/number of seats for '\
+           "carriage #{carriage_id}"
+      carriage_volume = gets.chomp.to_i
+
+      new_carriage!(carriage_id, carriage_type, carriage_volume)
     rescue StandardError => e
       puts "There was an error: #{e.message}"
 
