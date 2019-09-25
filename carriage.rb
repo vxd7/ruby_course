@@ -14,18 +14,18 @@ class Carriage
     @type = type
     @id = id
     @overall_space = overall_space
-    @avaliable_space = overall_space
+    @available_space = overall_space
     validate!
   end
 
   def fill_space(fill_amount)
-    raise 'Insufficient space' if (@avaliable_space - fill_amount).negative?
+    raise 'Insufficient space' if (@available_space - fill_amount).negative?
 
-    @avaliable_space -= fill_amount
+    @available_space -= fill_amount
   end
 
   def filled_space
-    @overall_space - @avaliable_space
+    @overall_space - @available_space
   end
 
   private
