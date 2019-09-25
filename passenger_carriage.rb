@@ -3,22 +3,12 @@
 require_relative 'carriage'
 
 class PassengerCarriage < Carriage
-  attr_reader :avaliable_seats, :overall_seats
 
   def initialize(id, overall_seats)
-    @overall_seats = overall_seats
-    @avaliable_seats = overall_seats
-
-    super('passenger', id)
+    super('passenger', id, overall_seats)
   end
 
-  def take_seat
-    raise 'No seats avaliable' if @avaliable_seats.zero?
-
-    @avaliable_seats -= 1
-  end
-
-  def taken_seats
-    @overall_seats - @avaliable_seats
+  def fill_space
+    super(1)
   end
 end
