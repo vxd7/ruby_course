@@ -90,13 +90,13 @@ class TrainManagement
 
     case carr.type
     when 'passenger'
-      puts " > number of seats: #{carr.overall_seats}"
-      puts " > number of taken seats: #{carr.taken_seats}"
-      puts " > number of free seats: #{carr.avaliable_seats}"
+      puts " > number of seats: #{carr.overall_space}"
+      puts " > number of taken seats: #{carr.filled_space}"
+      puts " > number of free seats: #{carr.available_space}"
     when 'cargo'
-      puts " > overall volume: #{carr.overall_volume}"
-      puts " > filled volume: #{carr.filled_volume}"
-      puts " > avaliable volume: #{carr.avaliable_volume}"
+      puts " > overall volume: #{carr.overall_space}"
+      puts " > filled volume: #{carr.filled_space}"
+      puts " > avaliable volume: #{carr.available_space}"
     end
   end
 
@@ -196,7 +196,7 @@ class TrainManagement
 
     puts 'Pls input fill volume amount'
     fill_val = gets.chomp.to_i
-    carriage.fill_volume(fill_val)
+    carriage.fill_space(fill_val)
 
     puts 'Successfully filled volume'
   end
@@ -216,7 +216,7 @@ class TrainManagement
       return
     end
 
-    carriage.take_seat
+    carriage.fill_space
     puts 'Successfully taken one seat'
   end
 
