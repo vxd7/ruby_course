@@ -3,7 +3,8 @@
 require_relative 'carriage'
 
 class CargoCarriage < Carriage
-  def initialize(id)
-    super('cargo', id)
+  def initialize(id, overall_volume)
+
+    super('cargo', id, overall_volume)
   end
 end

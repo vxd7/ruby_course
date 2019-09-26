@@ -44,12 +44,12 @@ class TrainManagement
     @trains << new_train
   end
 
-  def new_carriage!(carriage_id, carriage_type)
+  def new_carriage!(carriage_id, carriage_type, carriage_volume)
     case carriage_type
     when 'passenger'
-      new_carriage = PassengerCarriage.new(carriage_id)
+      new_carriage = PassengerCarriage.new(carriage_id, carriage_volume)
     when 'cargo'
-      new_carriage = CargoCarriage.new(carriage_id)
+      new_carriage = CargoCarriage.new(carriage_id, carriage_volume)
     else
       puts 'Invalid carriage type! Cannot proceed'
       return
@@ -81,6 +81,22 @@ class TrainManagement
     else
       puts 'Invalid action! Cannot proceed'
       return
+    end
+  end
+
+  def show_carriage_info(carr)
+    puts "Carriage: #{carr.id}:"
+    puts " > type: #{carr.type}"
+
+    case carr.type
+    when 'passenger'
+      puts " > number of seats: #{carr.overall_space}"
+      puts " > number of taken seats: #{carr.filled_space}"
+      puts " > number of free seats: #{carr.available_space}"
+    when 'cargo'
+      puts " > overall volume: #{carr.overall_space}"
+      puts " > filled volume: #{carr.filled_space}"
+      puts " > avaliable volume: #{carr.available_space}"
     end
   end
 
@@ -130,6 +146,13 @@ class TrainManagement
     @carriages.each { |carriage| puts "ID: #{carriage.id}; Type: #{carriage.type}" }
   end
 
+  def list_carriages_in_train
+    list_trains
+
+    train = find_train_tui
+    train.each_carriage { |carr| show_carriage_info(carr) }
+  end
+
   def new_carriage
     attempt = 0
     begin
@@ -141,7 +164,11 @@ class TrainManagement
       puts "Pls input desired type for carriage #{carriage_id}"
       carriage_type = gets.chomp
 
-      new_carriage!(carriage_id, carriage_type)
+      puts 'Pls input carriage volume/number of seats for '\
+           "carriage #{carriage_id}"
+      carriage_volume = gets.chomp.to_i
+
+      new_carriage!(carriage_id, carriage_type, carriage_volume)
     rescue StandardError => e
       puts "There was an error: #{e.message}"
 
@@ -150,6 +177,47 @@ class TrainManagement
     end
 
     puts "Created carriage #{carriage_id}!"
+  end
+
+  def fill_carriage
+    list_carriages
+
+    carriage = find_carriage_tui
+
+    if carriage.nil?
+      puts 'Invalid carriage'
+      return
+    end
+
+    if carriage.type != 'cargo'
+      puts 'Invalid carriage type'
+      return
+    end
+
+    puts 'Pls input fill volume amount'
+    fill_val = gets.chomp.to_i
+    carriage.fill_space(fill_val)
+
+    puts 'Successfully filled volume'
+  end
+
+  def take_seat
+    list_carriages
+
+    carriage = find_carriage_tui
+
+    if carriage.nil?
+      puts 'Invalid carriage'
+      return
+    end
+
+    if carriage.type != 'passenger'
+      puts 'Invalid carriage type'
+      return
+    end
+
+    carriage.fill_space
+    puts 'Successfully taken one seat'
   end
 
   def set_route

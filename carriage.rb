@@ -5,27 +5,33 @@ require_relative 'validator'
 
 class Carriage
   attr_reader :type, :id
+  attr_reader :available_space, :overall_space
   include ManufacturerCompany
   include Validator
   ID_PATTERN = /\w/.freeze
 
-  def initialize(type, id)
+  def initialize(type, id, overall_space)
     @type = type
     @id = id
+    @overall_space = overall_space
+    @available_space = overall_space
     validate!
   end
 
-  # def valid?
-  #   validate!
-  #   true
-  # rescue StandardError
-  #   false
-  # end
+  def fill_space(fill_amount)
+    raise 'Insufficient space' if (@available_space - fill_amount).negative?
+
+    @available_space -= fill_amount
+  end
+
+  def filled_space
+    @overall_space - @available_space
+  end
 
   private
 
   def validate!
-    raise "Id cannot be empty!" if id.empty?
-    raise "Invalid id format" if id !~ ID_PATTERN
+    raise 'Id cannot be empty!' if id.empty?
+    raise 'Invalid id format' if id !~ ID_PATTERN
   end
 end

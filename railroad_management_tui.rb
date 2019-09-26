@@ -34,13 +34,17 @@ class RailroadManagementTui
                            "To traverse train backward press 6\n"\
                            "To list all trains press 7\n"\
                            "To list all carriages press 8\n"\
-                           'To go back press 9',
+                           "To list all carriages of a particular train press 9\n"\
+                           "To take seat of a passenger carriage press 10\n"\
+                           "To fill volume of a cargo carriage press 11\n"\
+                           'To go back press 12',
 
     station_management_info: "Station management\n"\
                              "------------------\n"\
                              "To create new station input 0\n"\
                              "To list all stations input 1\n"\
-                             'To go back press 2'
+                             "To list all trains of a particular station press 2\n"\
+                             'To go back press 3'
   }.freeze
 
   ACTIONS_GENERAL = [:route_management_menu,
@@ -61,10 +65,14 @@ class RailroadManagementTui
                               :traverse_forward,
                               :traverse_backward,
                               :list_trains,
-                              :list_carriages].freeze
+                              :list_carriages,
+                              :list_carriages_in_train,
+                              :take_seat,
+                              :fill_carriage].freeze
 
   ACTIONS_STATION_MANAGEMENT = [:new_station,
-                                :list_stations].freeze
+                                :list_stations,
+                                :list_trains_on_station].freeze
 
   private_constant :MESSAGES, :ACTIONS_GENERAL, :ACTIONS_ROUTE_MANAGEMENT,
                    :ACTIONS_TRAIN_MANAGEMENT, :ACTIONS_STATION_MANAGEMENT
