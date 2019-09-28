@@ -36,5 +36,21 @@ module Accessors
         end
       end
     end
+
+    def strong_attr_accessor(name, klass)
+      raise TypeError, "#{name} is not a symbol" unless name.is_a?(Symbol)
+
+      varname_sym = "@#{name}".to_sym
+
+      # Getter
+      define_method(name) { instance_variable_get(varname_sym) }
+
+      # Setter
+      define_method("#{name}=") do |val|
+        raise TypeError, "Incorrect type #{val.class}" unless val.is_a?(klass)
+
+        instance_variable_set(varname_sym, val)
+      end
+    end
   end
 end
