@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
-require_relative 'validator'
+# require_relative 'validator'
+require_relative 'validation'
 
 class Station
   attr_reader :trains, :name
   include InstanceCounter
-  include Validator
+  # include Validator
+  include Validation
+
+  validate :name, :presence
 
   @all_stations = []
 
@@ -50,9 +54,9 @@ class Station
     @trains.each { |train| block.call(train) if block_given? }
   end
 
-  private
+  # private
 
-  def validate!
-    raise "Name cannot be empty" if name.empty?
-  end
+  # def validate!
+  #   raise "Name cannot be empty" if name.empty?
+  # end
 end

@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
-require_relative 'validator'
+# require_relative 'validator'
+require_relative 'validation'
 
 class Route
   attr_reader :stations, :name
   include InstanceCounter
-  include Validator
+  # include Validator
+  include Validation
+
+  validate :name, :presence
+  validate :stations, :presence
 
   def initialize(start_station, end_station, name)
     @stations = [start_station, end_station]
@@ -53,13 +58,13 @@ class Route
   #   false
   # end
 
-  private
+  # private
 
-  def validate!
-    raise 'Name cannot be empty' if name.empty?
-    raise 'Incorrect starting station' if @stations.first.nil?
-    raise 'Incorrect ending station' if @stations.last.nil?
-    raise 'Starting station must be an instance of Station' unless @stations.first.is_a?(Station)
-    raise 'Ending station must be an instance of Station' unless @stations.last.is_a?(Station)
-  end
+  # def validate!
+  #   raise 'Name cannot be empty' if name.empty?
+  #   raise 'Incorrect starting station' if @stations.first.nil?
+  #   raise 'Incorrect ending station' if @stations.last.nil?
+  #   raise 'Starting station must be an instance of Station' unless @stations.first.is_a?(Station)
+  #   raise 'Ending station must be an instance of Station' unless @stations.last.is_a?(Station)
+  # end
 end

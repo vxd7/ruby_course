@@ -4,6 +4,7 @@ require_relative 'manufacturer_company'
 require_relative 'instance_counter'
 # require_relative 'validator'
 require_relative 'validation'
+require_relative 'accessors'
 
 class Train
   attr_reader :velocity, :type, :id
@@ -11,6 +12,7 @@ class Train
   include InstanceCounter
   # include Validator # valid?
   include Validation
+  include Accessors
 
   # Three letters or numbers, optional minus sign and two letter or numbers
   ID_PATTERN = /^([a-zA-Z]|\d){3}\-{0,1}([a-zA-Z]|\d){2}$/.freeze
@@ -21,6 +23,9 @@ class Train
   class << self
     attr_accessor :all_trains
   end
+
+  # Save history of routes and current_station_index
+  attr_accessor_with_history :route, :current_station_index
 
   def initialize(id, type)
     @id = id
@@ -83,8 +88,8 @@ class Train
     raise 'Invalid route' if route.nil?
     raise 'route must be an instance if Route' unless route.is_a?(Route)
 
-    @route = route
-    @current_station_index = 0
+    self.route = route
+    self.current_station_index = 0
     current_station.receive_train(self)
   end
 
@@ -93,7 +98,7 @@ class Train
 
     # Then send train from the current station
     current_station.send_train(self)
-    @current_station_index += 1
+    self.current_station_index += 1
     # And receive it on the next station
     current_station.receive_train(self)
   end
@@ -102,7 +107,7 @@ class Train
     raise 'Route is not set!' if @route.nil?
 
     current_station.send_train(self)
-    @current_station_index -= 1
+    self.current_station_index -= 1
     current_station.receive_train(self)
   end
 
