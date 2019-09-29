@@ -58,8 +58,15 @@ module Validation
         next unless method =~ /.*(_presence|_type|_format)_validation/
 
         puts "validating #{method}"
-        raise "ERROR #{method}" unless send(method)
+        raise ArgumentError, "Negative validation result for #{method}" unless send(method)
       end
+    end
+
+    def valid?
+      validate!
+      true
+    rescue ArgumentError
+      false
     end
   end
 end
