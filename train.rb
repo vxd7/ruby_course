@@ -2,16 +2,21 @@
 
 require_relative 'manufacturer_company'
 require_relative 'instance_counter'
-require_relative 'validator'
+# require_relative 'validator'
+require_relative 'validation'
 
 class Train
   attr_reader :velocity, :type, :id
   include ManufacturerCompany
   include InstanceCounter
-  include Validator # valid?
+  # include Validator # valid?
+  include Validation
 
   # Three letters or numbers, optional minus sign and two letter or numbers
-  ID_PATTERN = /^([a-zA-Z]|\d){3}\-{0,1}([a-zA-Z]|\d){2}/.freeze
+  ID_PATTERN = /^([a-zA-Z]|\d){3}\-{0,1}([a-zA-Z]|\d){2}$/.freeze
+
+  validate :id, :presence
+  validate :id, :format, ID_PATTERN
 
   class << self
     attr_accessor :all_trains
@@ -134,10 +139,10 @@ class Train
 
   attr_reader :carriages
 
-  private
+  # private
 
-  def validate!
-    raise 'Incorrect number of characters in train id' unless @id.length.between?(5, 6)
-    raise 'Incorrect format of train id' unless @id =~ ID_PATTERN
-  end
+  # def validate!
+  #   raise 'Incorrect number of characters in train id' unless @id.length.between?(5, 6)
+  #   raise 'Incorrect format of train id' unless @id =~ ID_PATTERN
+  # end
 end
