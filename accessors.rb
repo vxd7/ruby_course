@@ -28,8 +28,12 @@ module Accessors
             history_array = instance_variable_set(histvar_sym, [])
           end
 
+          old_val = instance_variable_get(varname_sym)
+
           # Add val to array
-          instance_variable_set(histvar_sym, history_array + [val])
+          unless old_val.nil?
+            instance_variable_set(histvar_sym, history_array << old_val)
+          end
 
           # And set new value
           instance_variable_set(varname_sym, val)
