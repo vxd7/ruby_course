@@ -7,58 +7,50 @@ module Validation
   end
 
   module ClassMethods
-    def validate(name, validation_type, param=nil)
+    attr_reader :validations_array
+
+    def validate(name, validation_type, param = nil)
       raise TypeError, "#{name} argument should be a symbol" unless name.is_a?(Symbol)
       raise TypeError, "#{validation_type} argument should be a symbol" unless validation_type.is_a?(Symbol)
 
-      case validation_type
-      when 'presence'.to_sym
-        define_method("#{name}_presence_validation") do
-          self.class.presence_validation(instance_variable_get("@#{name}"))
-        end
+      @validations_array ||= []
 
-        private "#{name}_presence_validation".to_sym
-      when 'type'.to_sym
-        define_method("#{name}_type_validation") do
-          self.class.type_validation(instance_variable_get("@#{name}"), param)
-        end
+      current_validation = [name, validation_type, param]
 
-        private "#{name}_type_validation".to_sym
-      when 'format'.to_sym
-        define_method("#{name}_format_validation") do
-          self.class.format_validation(instance_variable_get("@#{name}"), param)
-        end
-
-        private "#{name}_format_validation".to_sym
-      end
+      @validations_array << current_validation
     end
+  end
 
-    def presence_validation(var)
-      return false if var.nil?
+  module InstanceMethods
+    def validate_presence(var, _param = nil)
+      raise ArgumentError, "#{var} is not present" if var.nil?
 
       if var.is_a?(String)
-        return false if var.empty?
+        raise ArgumentError, "#{var} is empty" if var.empty?
       end
 
       true
     end
 
-    def format_validation(var, format)
-      var =~ format
+    def validate_format(var, format)
+      unless var =~ format
+        raise ArgumentError, "#{var} does not conform to the format #{format}"
+      end
+
+      true
     end
 
-    def type_validation(var, type)
-      var.is_a?(type)
-    end
-  end
+    def validate_type(var, type)
+      raise ArgumentError, "#{var} is not of type #{type}" unless var.is_a?(type)
 
-  module InstanceMethods
+      true
+    end
+
     def validate!
-      private_methods.each do |method|
-        next unless method =~ /.*(_presence|_type|_format)_validation/
+      return if self.class.validations_array.nil?
 
-        puts "validating #{method}"
-        raise ArgumentError, "Negative validation result for #{method}" unless send(method)
+      self.class.validations_array.each do |name, val_type, param|
+        send("validate_#{val_type}", instance_variable_get("@#{name}"), param)
       end
     end
 
