@@ -37,7 +37,8 @@ class RailroadManagementTui
                            "To list all carriages of a particular train press 9\n"\
                            "To take seat of a passenger carriage press 10\n"\
                            "To fill volume of a cargo carriage press 11\n"\
-                           'To go back press 12',
+                           "To see history of the train routes press 12\n"\
+                           'To go back press 13',
 
     station_management_info: "Station management\n"\
                              "------------------\n"\
@@ -68,7 +69,8 @@ class RailroadManagementTui
                               :list_carriages,
                               :list_carriages_in_train,
                               :take_seat,
-                              :fill_carriage].freeze
+                              :fill_carriage,
+                              :show_route_history].freeze
 
   ACTIONS_STATION_MANAGEMENT = [:new_station,
                                 :list_stations,

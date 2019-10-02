@@ -84,6 +84,19 @@ class TrainManagement
     end
   end
 
+  def show_route_history
+    target_train = find_train_tui
+    if target_train.nil?
+      puts 'Invalid train! Cannot proceed'
+      return
+    end
+
+    puts 'History if the route variable:'
+    puts '------------------------------'
+    target_train.route_history.each { |route| print "#{route.name}; " }
+    puts "\n------------------------------"
+  end
+
   def show_carriage_info(carr)
     puts "Carriage: #{carr.id}:"
     puts " > type: #{carr.type}"
